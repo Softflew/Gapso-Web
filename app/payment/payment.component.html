@@ -1,0 +1,151 @@
+<heada></heada>
+
+<sidebar></sidebar>
+
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin page-header -->
+    <h1 style="margin-top: 50px;" class="page-header">Payment</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <alert></alert>
+        <!-- begin col-6 -->
+        <div class="col-md-6">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                    <h4 class="panel-title">Create New Payment Option</h4>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" (ngSubmit)="createPaymentOption()" #paymentOptionForm="ngForm" data-parsley-validate="true">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="paymentoptionname">Name *</label>
+                            <div class="col-md-9">
+                                <input type="text" id="paymentoptionname" name="paymentoptionname" class="form-control" [(ngModel)]="paymentoption.name" data-parsley-required="true"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="description">Description</label>
+                            <div class="col-md-9">
+                                <textarea id="description" name="description" class="form-control" rows="5" maxlength="200" [(ngModel)]="paymentoption.description"></textarea>
+                            </div>
+                        </div>    
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="active" name="active" [(ngModel)]="paymentoption.active" />
+                                        Active
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <button type="submit" class="btn btn-sm btn-success">Create Payment Option</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-6 -->
+        <!-- begin col-6 -->
+        <div class="col-md-6">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                    <h4 class="panel-title">Payment Option List</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered" [mfData]="paymentoptions" #mf="mfDataTable" [mfRowsOnPage]="5">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">S/No</th>
+                                <th style="width: 30%"><mfDefaultSorter by="name">Payment Option Name</mfDefaultSorter></th>
+                        <th style="width: 20%"><mfDefaultSorter by="createdDate">Creation Date</mfDefaultSorter></th>
+                        <th style="width: 20%"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of mf.data; let i = index">
+                                <td>{{i + 1}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.createdDate | date:'dd-MM-yyyy'}}</td>
+                                <td><button *ngIf="item.business" type="submit" class="btn btn-default" (click)="openPaymentOptionEdit(item);">Edit</button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-6 -->
+
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+<!-- #editproduct-modal-dialog -->
+<div class="modal fade" id="modal-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" (click)="getAllBusinessPaymentOption()" aria-hidden="true">×</button>
+                <h4 class="modal-title">Edit Payment Option</h4>
+            </div>
+            <form class="form-horizontal" (ngSubmit)="updatePaymentOption()" #paymentOptionUpdateForm="ngForm" data-parsley-validate="true">
+                <div class="modal-body">
+                    <alert></alert>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="paymentoptionname">Payment Option Name *</label>
+                        <div class="col-md-9">
+                            <input type="text" id="paymentoptionname" name="paymentoptionname" class="form-control" [(ngModel)]="editPaymentOption.name" data-parsley-required="true"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="description">Description</label>
+                        <div class="col-md-9">
+                            <textarea id="description" name="description" class="form-control" rows="5" maxlength="200" [(ngModel)]="editPaymentOption.description"></textarea>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="active" name="active" [(ngModel)]="editPaymentOption.active" />
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" id="closeModal" class="btn btn-sm btn-white" (click)="getAllBusinessPaymentOption()" data-dismiss="modal">Close</a>
+                    <button type="submit" class="btn btn-sm btn-success">Update Payment Option</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<a id="modalAnchor" href="#modal-dialog" data-toggle="modal"></a>

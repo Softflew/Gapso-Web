@@ -1,0 +1,7 @@
+<div *ngIf="message" 
+    [ngClass]="{ 'alert': message, 'alert-success fade in m-b-15': message.type === 'success', 'alert-danger fade in m-b-15': message.type === 'error' }">
+    {{message.text}}
+    <span class="close" data-dismiss="alert">&times;</span>
+</div>
+
+

@@ -1,0 +1,107 @@
+<heada></heada>
+
+<sidebar></sidebar>
+
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin page-header -->
+    <h1 style="margin-top: 50px;" class="page-header">Business</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-6 -->
+        <div class="col-md-4">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+                <div class="panel-body">
+                    <form class="form-horizontal">
+                        <div class="profile-section">
+                            <!-- begin profile-left -->
+                            <div class="profile-left">
+                                <!-- begin profile-image -->
+                                <div class="profile-image">
+                                    <img height="175px" id="logo2"/> 
+                                    <i class="fa fa-user hide"></i>
+                                </div>
+                                <!-- end profile-image -->
+                                <div class="m-b-10">
+                                    <a href="#modal-dialog" class="btn btn-sm btn-default" data-toggle="modal">Change Business Logo</a>
+                                </div>
+                            </div>
+                            <!-- end profile-left -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+
+            <!-- #modal-dialog -->
+            <div class="modal fade" id="modal-dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title">Upload Business Logo</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div style="margin-bottom: 10px" class="note note-info">
+                                <h4>Instructions</h4>
+                                <ul>
+                                    <li>The maximum file size for uploads in this demo is <strong>1 MB</strong>.</li>
+                                    <li>Only image files (<strong>JPG, GIF, PNG, JPEG</strong>).</li>
+                                </ul>
+                            </div>
+                            <div class="row fileupload-buttonbar">
+                                <div class="col-md-7">
+                                    <span class="btn btn-success fileinput-button">
+                                        <i class="fa fa-plus"></i>
+                                        <image-upload [max]="1" [preview]="true" [maxFileSize]="1048576" [buttonCaption]="'Select Logo'" [url]="'http://localhost:8080/Gapso-web/service/uploadBusinessLogo?image'" 
+                                            [extensions]="['jpg', 'png', 'gif', 'jpeg']" [dropBoxMessage]="'Drop your logo here'" 
+                                            (onFileUploadFinish)="imageUploaded($event)" (isPending)="disableSendButton($event)" (onRemove)="imageRemoved($event)"></image-upload>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="javascript:;" id="closeModal" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end col-6 -->
+        <!-- begin col-6 -->
+        <div class="col-md-6">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-validation-1">
+                <div class="panel-body panel-form">
+                    <alert></alert>
+                    <form class="form-horizontal" (ngSubmit)="updateBusiness()" #businessForm="ngForm" data-parsley-validate="true">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Business Name</label>
+                            <div class="col-md-9">
+                                <input type="text" id="businessName" name="businessName" class="form-control" [(ngModel)]="business.name" data-parsley-required="true"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Mailing Address</label>
+                            <div class="col-md-9">
+                                <textarea id="mAddress" name="mAddress" class="form-control" rows="5" maxlength="200" [(ngModel)]="business.mailingAddress"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <button type="submit" class="btn btn-sm btn-success">Update Business</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-6 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->

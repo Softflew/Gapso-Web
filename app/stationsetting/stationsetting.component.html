@@ -1,0 +1,230 @@
+<heada></heada>
+
+<sidebar></sidebar>
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin page-header -->
+    <h1 style="margin-top: 50px;" class="page-header">Station Management</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-md-12">
+            <ul class="nav nav-pills">
+                <li class="active"><a href="#nav-pills-tab-1" data-toggle="tab">Dispensing Point</a></li>
+                <li><a href="#nav-pills-tab-2" data-toggle="tab">Payment Option</a></li>
+            </ul>
+            <div class="tab-content">
+                <alert></alert>
+                <div class="tab-pane fade active in" id="nav-pills-tab-1">
+                    <div class="col-md-5">
+                        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                </div>
+                                <h4 class="panel-title">Create New Dispensing Point</h4>
+                            </div>
+                            <div class="panel-body">
+                                                                <form class="form-horizontal" (ngSubmit)="createDispensingPoint()" #newDispensingPointForm="ngForm" data-parsley-validate="true">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="pointname">Name *</label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="pointname" name="pointname"[(ngModel)]="pdp.name" class="form-control" data-parsley-required="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="product">Product</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" id="product" name="product" [(ngModel)]="productId" data-parsley-required="true">
+                                                <option *ngFor="let prod of activeProducts" [value]="prod.id">{{prod.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label" for="attendant">Attendant</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" id="attendant" name="attendant" [(ngModel)]="attendantId">
+                                                <option [value]="0"><span>--None--</span></option>
+                                                <option *ngFor="let user of attendants" [value]="user.id">{{user.firstName}} {{user.surname}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"></label>
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" id="active" name="active" [(ngModel)]="pdp.active" />
+                                                    Active
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"></label>
+                                        <div class="col-md-9">
+                                            <button type="submit" class="btn btn-sm btn-success">Create</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- begin panel -->
+                    <div class="col-md-7">
+                        <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" (click)="getDispensingPointByStation()" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                </div>
+                                <h4 class="panel-title">List of Dispensing Points</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div style="margin-bottom: 15px;" class="col-md-6">
+                                    <button (click)="resetDispensePointAttendant();" type="button" class="btn btn-sm btn-success">Click to Reset All Dispensing Point Attendants</button>
+                                </div>
+                                <table class="table table-striped table-bordered" [mfData]="pdps" #mf="mfDataTable" [mfRowsOnPage]="5">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%">S/No</th>
+                                            <th style="width: 30%"><mfDefaultSorter by="name">Name</mfDefaultSorter></th>
+                                    <th style="width: 5%"><mfDefaultSorter by="product.productCode">Product</mfDefaultSorter></th>
+                                    <th style="width: 15%"><mfDefaultSorter by="currentAttendant">Attendant</mfDefaultSorter></th>
+                                    <th style="width: 5%"><mfDefaultSorter by="active">Active</mfDefaultSorter></th>
+                                    <th style="width: 10%"></th>
+                                    </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of mf.data; let i = index">
+                                            <td>{{i + 1}}</td>
+                                            <td>{{item.name}}</td>
+                                            <td>{{item.product.productCode}}</td>
+                                            <td>{{item.currentAttendant}}</td>
+                                            <td><span *ngIf="item.active"><button type="submit" class="btn btn-default" (click)="deactivateDispensingPoint(item);">De-Activate</button></span><span *ngIf="!item.active"><button type="submit" class="btn btn-default" (click)="activateDispensingPoint(item);">Activate</button></span></td>
+                                            <td><button type="submit" class="btn btn-default" (click)="openDispensePoint(item);">Edit</button></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="6">
+                                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                                    </td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-pills-tab-2">
+                    <div class="col-md-6">
+                        <div class="panel panel-inverse" data-sortable-id="form-stuff-3">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" (click)="getDispensingPointByStation()" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                </div>
+                                <h4 class="panel-title">Payment Option</h4>
+                            </div>
+                            <div class="panel-body">
+                                <alert></alert>
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-md-6">
+                                            <h5>Available Payment Options</h5>
+                                            <span *ngIf="inactivePaymentOptions?.length == 0">No Available Payment Option</span>  
+                                            <div class="input-group" *ngFor="let spaymentoption of inactivePaymentOptions">
+                                                 <span class="input-group-addon">
+                                                    <input type="checkbox" (click)="businessPaymentOptionOnClick(spaymentoption.id, $event)" id="sPaymentOptionId" name="sPaymentOptionId"/>
+                                                </span>
+                                                <input type="text" class="form-control" disabled placeholder="{{spaymentoption.paymentOption.name}}" />
+                                            </div>
+                                            <span *ngIf="inactivePaymentOptions?.length > 0"><button (click)="addStationPaymentOption()" type="submit" class="btn btn-default m-t-20">Add Selected Payment Options</button></span>  
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5>Station Payment Options</h5>
+                                            <span *ngIf="activeStationPaymentOptions?.length == 0">No Station Payment Option</span>  
+                                            <div class="input-group" *ngFor="let paymentoption of activeStationPaymentOptions">
+                                                 <span class="input-group-addon">
+                                                    <input type="checkbox" (click)="stationPaymentOptionOnClick(paymentoption.id, $event)"  id="cPaymentOptionId" name="paymentoptionId" value="{{paymentoption.id}}"/>
+                                                </span>
+                                                <input type="text" class="form-control" disabled placeholder="{{paymentoption.paymentOption.name}}" />
+                                            </div>
+                                            <span *ngIf="activeStationPaymentOptions?.length > 0"><button (click)="removeStationPaymentOption()" type="submit" class="btn btn-default m-t-20">Remove Selected Payment Options</button></span>  
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>       
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end col-6 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+<!-- #dispense-point-modal-dialog -->
+<div class="modal fade" id="modal-dispensepoint">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{editPdp.name}}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" (ngSubmit)="updateDispensingPoint()" #updateDispensingPointForm="ngForm" data-parsley-validate="true">
+                    <alert></alert>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="pointname">Name *</label>
+                        <div class="col-md-6">
+                            <input type="text" id="pointname" name="pointname"[(ngModel)]="editPdp.name" class="form-control" data-parsley-required="true"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="product">Product</label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="product" name="product" [(ngModel)]="editProductId" data-parsley-required="true">
+                                <option *ngFor="let prod of activeProducts" [value]="prod.id">{{prod.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="product">Current Attendant</label>
+                        <div class="col-md-6">
+                            <input type="text" id="currentAttendant" name="currentAttendant"[(ngModel)]="editPdp.currentAttendant" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="attendant">Change Attendant</label>
+                        <div class="col-md-6">
+                            <select class="form-control" id="attendant" name="attendant" [(ngModel)]="editAttendantId">
+                                <option [value]="-1"></option>
+                                <option [value]="0"><span>--No Attendant--</span></option>
+                                <option *ngFor="let user of attendants" [value]="user.id">{{user.firstName}} {{user.surname}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <button type="submit" class="btn btn-sm btn-success">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="margin-top: 35px;">
+                <a href="javascript:;" id="closeModal" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<a id="modalDispensePoint" href="#modal-dispensepoint" data-toggle="modal"></a>

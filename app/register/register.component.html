@@ -1,0 +1,215 @@
+<!--
+<div class="container" [hidden]="submitted">
+    <div>
+        <h1>User Registration</h1>
+        <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input type="text" class="form-control" id="firstname" [(ngModel)]="user.firstName" name="firstName" #firstName="ngModel" required>
+            </div>
+            <div [hidden]="firstName.valid || firstName.pristine"
+                class="alert alert-danger">
+                Name is required
+        </div>
+        <div class="form-group">
+            <label for="middlename">Middle Name</label>
+            <input type="text" class="form-control" id="middlename" [(ngModel)]="user.middleName" name="middleName">
+        </div>
+        <div class="form-group">
+            <label for="surname">Surname</label>
+            <input type="text" class="form-control" id="surname" name="surname" [(ngModel)]="user.surname" #surname="ngModel" required>
+        </div>
+        <div [hidden]="surname.valid || surname.pristine"
+            class="alert alert-danger">
+            Surname is required
+    </div>
+    <div class="form-group">
+        <label for="emailAddress">Email Address</label>
+        <input type="email" class="form-control" id="emailAddress" [(ngModel)]="user.emailAddress" name="emailAddress" #emailAddress="ngModel" required>
+    </div>
+    <div [hidden]="emailAddress.valid || emailAddress.pristine"
+        class="alert alert-danger">
+        Email Address is required
+    </div>
+    <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="user.phoneNumber" #phoneNumber="ngModel" required>
+    </div>
+    <div [hidden]="phoneNumber.valid || phoneNumber.pristine"
+        class="alert alert-danger">
+        Phone Number is required
+    </div>
+    <div class="form-group">
+        <label for="gender">Gender</label>
+        <select class="form-control" id="gender" name="gender" [(ngModel)]="user.gender" required>
+            <option *ngFor="let gend of genders" [value]="gend">{{gend}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password" [(ngModel)]="user.password" id="password" #password="ngModel" required>
+    </div>
+    <div [hidden]="password.valid || password.pristine"
+        class="alert alert-danger">
+        Password is required
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">Create User</button>
+    </form>
+    </div>
+  </div>
+<div [hidden]="!submitted">
+    <h2>You created a user with the following details:</h2>
+    <div class="row">
+        <div class="col-xs-3">First Name</div>
+        <div class="col-xs-9  pull-left">{{ user.firstName}}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Surname</div>
+        <div class="col-xs-9 pull-left">{{ user.surname }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Phone Number</div>
+        <div class="col-xs-9 pull-left">{{ user.phoneNumber }}</div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary" (click)="newUser();">Continue</button>
+</div>-->
+
+<!-- begin register -->
+<div class="register register-with-news-feed">
+    <!-- begin news-feed -->
+    <div class="news-feed">
+        <div class="news-image">
+            <img src="app/assets/img/login-bg/bg-8.jpg" alt="" />
+        </div>
+        <div class="news-caption">
+            <h4 class="caption-title"><i class="fa fa-edit text-success"></i>Gapso</h4>
+            <p>
+                Real Time Gas And Petrol Station Management App
+            </p>
+        </div>
+    </div>
+    <!-- end news-feed -->
+    <!-- begin right-content -->
+    <div class="right-content">
+        <!-- begin register-header -->
+        <h1 class="register-header">
+            Sign Up
+            <small>Create your Gapso Account. It’s free and always will be.</small>
+        </h1>
+        <!-- end register-header -->
+        <!-- begin register-content -->
+        <div class="register-content">
+            <alert></alert>
+            <form (ngSubmit)="registerUser()" class="margin-bottom-0" #userForm="ngForm" data-parsley-validate="true">
+                <label class="control-label">Name</label>
+                <div class="row row-space-10">
+                    <div class="col-md-6 m-b-15">
+                        <input id="firstname" name="firstName" type="text" class="form-control" placeholder="First name" [(ngModel)]="user.firstName" data-parsley-required="true"/>
+                    </div>
+                    <div class="col-md-6 m-b-15">
+                        <input id="surname" name="surname" type="text" class="form-control" placeholder="Last name" [(ngModel)]="user.surname" data-parsley-required="true"/>
+                    </div>
+                </div>
+                <label class="control-label">Email</label>
+                <div class="row m-b-15">
+                    <div class="col-md-12">
+                        <input id="email" name="email" type="text" class="form-control" placeholder="Email address" [(ngModel)]="user.emailAddress" data-parsley-type="email" data-parsley-required="true"/>
+                    </div>
+                </div>
+                <label class="control-label">Phone Number</label>
+                <div class="row m-b-15">
+                    <div class="col-md-12">
+                        <input id="phoneNo" name="phoneNo" type="text" class="form-control" placeholder="Phone Number" [(ngModel)]="user.phoneNumber" data-parsley-required="true"/>
+                    </div>
+                </div>
+                <label class="control-label">Password</label>
+                <div class="row m-b-15">
+                    <div class="col-md-12">
+                        <input id="password" name="password" type="password" class="form-control" placeholder="Password" [(ngModel)]="user.password" data-parsley-required="true"/>
+                    </div>
+                </div>
+                <label class="control-label">Business Name</label>
+                <div class="row m-b-15">
+                    <div class="col-md-12">
+                        <input id="businessName" name="businessName" type="text" class="form-control" placeholder="Business Name" [(ngModel)]="user.middleName" data-parsley-required="true"/>
+                    </div>
+                </div>
+                <div class="checkbox m-b-30">
+                    <label>
+                        <input id="terms" name="terms" type="checkbox" [(ngModel)]="submitted" data-parsley-required="true"/> By clicking Sign Up, you agree to our <a href="#modal-terms" data-toggle="modal">Terms</a> and that you have read our <a href="#modal-data-policy" data-toggle="modal">Data Policy</a>, including our <a href="#modal-cookie-use" data-toggle="modal">Cookie Use</a>.
+                    </label>
+                </div>
+                <div class="register-buttons">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
+                </div>
+                <div class="m-t-20 m-b-40 p-b-40">
+                    Already have an account? Click <a routerLink="/login" routerLinkActive="active">here</a> to login.
+                </div>
+                <hr />
+                <p class="text-center text-inverse">
+                    &copy; CarlbTech All Right Reserved 2017
+                </p>
+            </form>
+        </div>
+        <!-- end register-content -->
+    </div>
+    <!-- end right-content -->
+</div>
+<!-- end register -->
+<!-- #modal-terms -->
+<div class="modal fade" id="modal-terms">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Terms and Condition</h4>
+            </div>
+            <div class="modal-body">
+                <p>Text in a modal</p>
+                <p>Do you want to turn on location services so GPS can use your location ?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #modal-cookie-use -->
+<div class="modal fade" id="modal-cookie-use">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Cookie Use</h4>
+            </div>
+            <div class="modal-body">
+                <p>Text in a modal</p>
+                <p>Do you want to turn on location services so GPS can use your location ?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #modal-data-policy -->
+<div class="modal fade" id="modal-data-policy">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Data Policy</h4>
+            </div>
+            <div class="modal-body">
+                <p>Text in a modal</p>
+                <p>Do you want to turn on location services so GPS can use your location ?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>

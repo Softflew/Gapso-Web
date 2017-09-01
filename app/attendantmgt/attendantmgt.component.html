@@ -1,0 +1,136 @@
+<heada></heada>
+
+<sidebar></sidebar>
+
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin page-header -->
+    <h1 style="margin-top: 50px;" class="page-header">Staff Management</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-6 -->
+        <div class="col-md-6">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                    <h4 class="panel-title">Station Attendants</h4>
+                </div>
+                <div class="panel-body">
+                    <alert></alert>
+                    <table class="table table-striped table-bordered" [mfData]="attendants" #mf="mfDataTable" [mfRowsOnPage]="5">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">S/No</th>
+                                <th style="width: 30%"><mfDefaultSorter by="surname">Name</mfDefaultSorter></th>
+                        <th style="width: 10%"></th>
+                        <th style="width: 10%"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of mf.data; let i = index">
+                                <td>{{i + 1}}</td>
+                                <td>{{item.surname}} {{item.firstName}}</td>
+                                <td><button type="submit" class="btn btn-default" (click)="openAttendantDetail(item);">Detail</button></td>
+                                <td><span *ngIf="item.active"><button type="submit" class="btn btn-default" (click)="deactivateAttendant(item);">De-Activate</button></span><span *ngIf="!item.active"><button type="submit" class="btn btn-default" (click)="activateAttendant(item);">Activate</button></span></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-6 -->
+        <!-- begin col-6 -->
+        <div class="col-md-6">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                    </div>
+                    <h4 class="panel-title">Input Sizes, Input Group</h4>
+                </div>
+                <div class="panel-body">
+
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-6 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+<!--#modalAttendant-modal-dialog -->
+<div class="modal fade" id="modal-attendant">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" (ngSubmit)="createUser()" #portalUserForm="ngForm" data-parsley-validate="true">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="firstname">First Name</label>
+                        <div class="col-md-9">
+                            <input type="text" id="firstname" name="firstname" class="form-control" [(ngModel)]="attendant.firstName" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="middlename">Middle Name</label>
+                        <div class="col-md-9">
+                            <input type="text" id="middlename" name="middlename" class="form-control" [(ngModel)]="attendant.middleName" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="surname">Surname</label>
+                        <div class="col-md-9">
+                            <input type="text" id="surname" name="surname" class="form-control" [(ngModel)]="attendant.surname" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="emailAddress">Email Address</label>
+                        <div class="col-md-9">
+                            <input type="text" id="emailAddress" name="emailAddress" class="form-control" [(ngModel)]="attendant.emailAddress" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="phoneNumber">Phone Number</label>
+                        <div class="col-md-9">
+                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" [(ngModel)]="attendant.phoneNumber" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="active" name="active" [(ngModel)]="attendant.active" disabled/>
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>    
+            </div>
+            <div class="modal-footer" style="margin-top: 35px;">
+                <a href="javascript:;" id="closeModal" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<a id="modalAttendant" href="#modal-attendant" data-toggle="modal"></a>

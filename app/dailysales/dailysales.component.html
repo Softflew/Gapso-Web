@@ -1,0 +1,144 @@
+<!-- begin page-header -->
+<h1 style="margin-top: 50px;" class="page-header">Sales | {{product.name}} [{{product.productCode}}]</h1>
+<!-- end page-header -->
+<!-- begin row -->
+<div class="row">
+
+    <!-- begin col-3 -->
+    <div class="col-md-3 col-sm-6">
+        <div class="widget widget-stats bg-green">
+            <div class="stats-icon"><i class="fa fa-chain-broken"></i></div>
+            <div class="stats-info">
+                <h4>PRODUCT PRICE</h4>
+                <p>&#8358;<span>{{stationProductPrice.price | number}}/{{product.unit}}</span></p>	
+            </div>
+            <div class="stats-link">
+                <a href="javascript:;">Approved Date: {{stationProductPrice.createdDate | date}}</a>
+            </div>
+        </div>
+    </div>
+    <!-- end col-3 -->
+    <!-- begin col-3 -->
+    <div class="col-md-3 col-sm-6">
+        <div class="widget widget-stats bg-green">
+            <div class="stats-icon"><i class="fa fa-calculator"></i></div>
+            <div class="stats-info">
+                <h4>SALES TODAY [&#8358;]</h4>
+                <p><span>{{todaySalesAmount | number}}</span></p>	
+            </div>
+            <div class="stats-link">
+                <a href="javascript:;" (click)="openSales();">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- end col-3 -->
+    <!-- begin col-3 -->
+    <div class="col-md-3 col-sm-6">
+        <div class="widget widget-stats bg-green">
+            <div class="stats-icon"><i class="fa fa-money"></i></div>
+            <div class="stats-info">
+                <h4>SALES TODAY [{{product.unit}}]</h4>
+                <p>{{todaySalesQuantity | number}}</p>	
+            </div>
+            <div class="stats-link">
+                <a href="javascript:;" (click)="openSales();">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- end col-3 -->
+    <!-- begin col-3 -->
+    <div class="col-md-3 col-sm-6">
+        <div class="widget widget-stats bg-green">
+            <div class="stats-icon"><i class="fa fa-archive"></i></div>
+            <div class="stats-info">
+                <h4>PRODUCT LEVEL [{{product.unit}}]</h4>
+                <p>{{currentProductLevel | number}}</p>	
+            </div>
+            <div class="stats-link">
+                <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- end col-3 -->
+    <!-- begin col-6 -->
+    <div class="col-md-6">
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+
+            <div class="panel-body">
+                <alert></alert>
+                <form class="form-horizontal" (ngSubmit)="recordSales()" #recordSalesForm="ngForm">
+                    <div style="margin-left: 2px;" class="form-group">
+                        <div class="col-md-9">
+                            <label class="radio-inline">
+                                <input type="radio" (change)="saleType('amount')" name="sales" value="option1" checked />
+                                Sales
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" (change)="saleType('unit')" name="sales"  value="option2" />
+                                {{product.unit}}
+                            </label>
+                        </div>
+                    </div>
+                    <div id="amount" class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">&#8358;</span>
+                            <input id="amountInput" type="number" step="0.01" min="0.00"  name="amount" class="form-control" [(ngModel)]="salesAmount" required/>
+                        </div>
+                    </div> 
+                    <div id="unit" class="col-md-4" hidden="true">
+                        <div class="input-group">
+                            <input id="unitInput" type="number" step="0.01" min="0.00" name="unit" class="form-control" [(ngModel)]="salesUnit" required disabled="true"/>
+                            <span class="input-group-addon">{{product.unit}}</span>
+                        </div>
+                    </div> 
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-addon">Payment</span>
+                            <select class="form-control" id="paymentOption" name="paymentOption" [(ngModel)]="paymentOptionId" required>
+                                <option *ngFor="let option of stationPaymentOptions" [value]="option.id">{{option.paymentOption.name}}</option>
+                            </select>
+                        </div>
+                    </div> 
+                    <button type="submit" id="recordSales" class="btn btn-sm btn-success">Record Sales</button>
+                </form>
+            </div>
+        </div>
+        <!-- end panel -->
+    </div>
+    <!-- end col-6 -->
+
+</div>
+<!-- #sales-modal-dialog -->
+<div class="modal fade" id="modal-sales">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Sales - {{today | date}}</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th  style="width: 3px">S/No</th>
+                            <th>Quantity [{{product.unit}}]</th>
+                            <th>Price [&#8358;]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let a of todaySales; let i = index">
+                            <td>{{i + 1}}</td>
+                            <td>{{a.quantity | number}}</td>
+                            <td>{{a.quantity * stationProductPrice.price | number}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" id="closeModal" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<a id="modalSales" href="#modal-sales" data-toggle="modal"></a>

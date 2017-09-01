@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base href="/">
+        <title>Gapso</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Polyfill(s) for older browsers -->
+        <script src="node_modules/core-js/client/shim.min.js"></script>
+        <script src="node_modules/zone.js/dist/zone.js"></script>
+        <script src="node_modules/systemjs/dist/system.src.js"></script>
+        <script src="systemjs.config.js"></script>
+
+        <!-- ================== BEGIN BASE CSS STYLE ================== -->
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+        <link href="app/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+        <link href="app/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="app/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="app/assets/css/animate.min.css" rel="stylesheet" />
+        <link href="app/assets/css/style.min.css" rel="stylesheet" />
+        <link href="app/assets/css/style-responsive.min.css" rel="stylesheet" />
+        <link href="app/assets/css/theme/default.css" rel="stylesheet" id="theme" />
+        <!-- ================== END BASE CSS STYLE ================== -->
+
+        <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+        <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+        <!-- ================== BEGIN BASE JS ================== -->
+        <script src="app/assets/plugins/pace/pace.min.js"></script>
+        <!-- ================== END BASE JS ================== -->
+        <script>
+            System.import('app').catch(function (err) {
+                console.error(err);
+            });
+        </script>
+        <script language="Javascript">
+            function capLock(e) {
+                kc = e.keyCode ? e.keyCode : e.which;
+                sk = e.shiftKey ? e.shiftKey : ((kc == 16) ? true : false);
+                if (((kc >= 65 && kc <= 90) && !sk) || ((kc >= 97 && kc <= 122) && sk)) {
+                    document.getElementById('capsLockCheck').style.visibility = 'visible';
+                } else {
+                    document.getElementById('capsLockCheck').style.visibility = 'hidden';
+                }
+
+            }
+        </script>
+
+    </head>
+
+    <body class="pace-top bg-white">
+        <!-- begin #page-loader -->
+        <div id="page-loader" class="fade in"><span class="spinner"></span></div>
+        <!-- end #page-loader -->
+    <my-app></my-app>
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="app/assets/plugins/jquery/jquery-1.9.1.min.js"></script>
+    <script src="app/assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+    <script src="app/assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="app/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!--[if lt IE 9]>
+            <script src="app/assets/crossbrowserjs/html5shiv.js"></script>
+            <script src="app/assets/crossbrowserjs/respond.min.js"></script>
+            <script src="app/assets/crossbrowserjs/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="app/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="app/assets/plugins/jquery-cookie/jquery.cookie.js"></script>
+    <!-- ================== END BASE JS ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+    <script src="app/assets/js/apps.min.js"></script>
+    <!-- ================== END PAGE LEVEL JS ================== -->
+    <script>
+            $(document).ready(function () {
+                App.init();
+            });
+    </script>
+
+</body>
+</html>

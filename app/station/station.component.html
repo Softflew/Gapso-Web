@@ -1,0 +1,256 @@
+<heada></heada>
+
+<sidebar></sidebar>
+
+<!-- begin #content -->
+<div id="content" class="content">
+    <!-- begin page-header -->
+    <h1 style="margin-top: 50px;" class="page-header">Station</h1>
+    <!-- end page-header -->
+
+    <!-- begin row -->
+    <div class="row">
+        <alert></alert>
+        <!-- begin col-6 -->
+        <div class="col-md-6">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                    <h4 class="panel-title">Create New Station</h4>
+                </div>
+                <div class="panel-body">
+                    <form class="form-horizontal" (ngSubmit)="createStation()" #stationForm="ngForm" data-parsley-validate="true">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="stationname">Station Name *</label>
+                            <div class="col-md-9">
+                                <input type="text" id="stationname" name="stationname" class="form-control" [(ngModel)]="station.name" data-parsley-required="true"/>
+                            </div>
+                        </div>
+                        <!--                                    <div class="form-group">
+                                                                <label class="col-md-3 control-label" for="geolocation">Station Location *</label>
+                                                                <div class="col-md-9">
+                                                                    <input (setAddress)='getAddress($event)' (country)='country=$event' type="text" id="autocomplete" name="geolocation" class="form-control" [(ngModel)]="station.geoLocation"
+                                                                        data-parsley-required="true" ng2-google-place-autocomplete/>
+                                                                    <input type="text" class="form-control" id="autocomplete" name="address" (setAddress)="getAddress($event)" [(ngModel)]="address" ng2-google-place-autocomplete />
+                                                                </div>
+                                                            </div>-->
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Station Address</label>
+                            <div class="col-md-9">
+                                <textarea id="mAddress" name="mAddress" class="form-control" rows="5" maxlength="200" [(ngModel)]="station.address"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="active" name="active" [(ngModel)]="station.active" />
+                                        Active
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <button type="submit" class="btn btn-sm btn-success">Create Station</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- begin col-10 -->
+        <div class="col-md-10">
+            <!-- begin panel -->
+            <div class="panel panel-inverse" data-sortable-id="form-stuff-2">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                    <h4 class="panel-title">Station List</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped table-bordered" [mfData]="stations" #mf="mfDataTable" [mfRowsOnPage]="5">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">S/No</th>
+                                <th style="width: 20%"><mfDefaultSorter by="name">Station Name</mfDefaultSorter></th>
+                        <th style="width: 10%"><mfDefaultSorter by="createdDate">Created Date</mfDefaultSorter></th>
+                        <th style="width: 20%"><mfDefaultSorter by="geoLocation">Location</mfDefaultSorter></th>
+                        <th style="width: 5%"></th>
+                        <th style="width: 5%"></th>
+                        <th style="width: 5%"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of mf.data; let i = index">
+                                <td>{{i + 1}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.createdDate | date:'dd-MM-yyyy'}}</td>
+                                <td>{{item.geoLocation}}</td>
+                                <td><button type="submit" class="btn btn-default" (click)="openEdit(item);">Edit</button></td>
+                                <td><button type="submit" class="btn btn-default" (click)="openStaff(item);">Staff</button></td>
+                                <td><button type="submit" class="btn btn-default" (click)="openProduct(item);">Product</button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="7">
+                        <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                        </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-6 -->
+        <!-- end panel -->
+    </div>
+    <!-- end col-6 -->
+
+
+</div>
+<!-- end row -->
+<!-- #station-modal-dialog -->
+<div class="modal fade" id="modal-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <alert></alert>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" (click)="getAllBusinessStations()" aria-hidden="true">×</button>
+                <h4 class="modal-title">Edit Station</h4>
+            </div>
+            <form class="form-horizontal" (ngSubmit)="updateStation()" #stationUpdateForm="ngForm" data-parsley-validate="true">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="stationname">Station Name *</label>
+                        <div class="col-md-9">
+                            <input type="text" id="stationname" name="stationname" class="form-control" [(ngModel)]="editStation.name" data-parsley-required="true"/>
+                        </div>
+                    </div>
+                    <!--                                    <div class="form-group">
+                                                            <label class="col-md-3 control-label" for="geolocation">Station Location *</label>
+                                                            <div class="col-md-9">
+                                                                <input (setAddress)='getAddress($event)' (country)='country=$event' type="text" id="autocomplete" name="geolocation" class="form-control" [(ngModel)]="station.geoLocation"
+                                                                 data-parsley-required="true" ng2-google-place-autocomplete/>
+                                                                <input type="text" class="form-control" id="autocomplete" name="address" (setAddress)="getAddress($event)" [(ngModel)]="address" ng2-google-place-autocomplete />
+                                                            </div>
+                                                        </div>-->
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Station Address</label>
+                        <div class="col-md-9">
+                            <textarea id="mAddress" name="mAddress" class="form-control" rows="5" maxlength="200" [(ngModel)]="editStation.address"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="active" name="active" [(ngModel)]="editStation.active" />
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" (click)="getAllBusinessStations()" id="closeModal" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+                    <button type="submit" class="btn btn-sm btn-success">Update Station</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- #staff-modal-dialog -->
+<div class="modal fade" id="modal-staff">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{editStation.name}} Station Staff</h4>
+            </div>
+            <div class="modal-body">
+                <h5 class="m-t-0 m-b-15">Station Manager: <span *ngIf="stationManager"><strong>{{stationManager.firstName}} {{stationManager.surname}}</strong></span></h5>
+
+                <h5 class="m-t-40 m-b-15">Station Attendants </h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th  style="width: 3px">S/No</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let a of stationAttendants; let i = index">
+                            <td>{{i + 1}}</td>
+                            <td>{{a.firstName}} {{a.surname}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" id="closeModal" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #product-modal-dialog -->
+<div class="modal fade" id="modal-product">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">{{editStation.name}} Station Products</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <h5>Available Products</h5>
+                            <span *ngIf="inactiveStationProducts?.length == 0">No Available Products</span>  
+                            <div class="input-group" *ngFor="let sproduct of inactiveStationProducts">
+                                 <span class="input-group-addon">
+                                    <input type="checkbox" (click)="businessProductOnClick(sproduct.id, $event)" id="sProductId" name="sproductId"/>
+                                </span>
+                                <input type="text" class="form-control" disabled placeholder="{{sproduct.product.name}}" />
+                            </div>
+                            <span *ngIf="inactiveStationProducts?.length > 0"><button (click)="addStationProduct()" type="submit" class="btn btn-default m-t-20">Add Selected Products</button></span>  
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Station Products</h5>
+                            <span *ngIf="activeStationProducts?.length == 0">No Station Product</span>  
+                            <div class="input-group" *ngFor="let product of activeStationProducts">
+                                 <span class="input-group-addon">
+                                    <input type="checkbox" (click)="stationProductOnClick(product.id, $event)"  id="cProductId" name="productId" value="{{product.id}}"/>
+                                </span>
+                                <input type="text" class="form-control" disabled placeholder="{{product.product.name}}" />
+                            </div>
+                            <span *ngIf="activeStationProducts?.length > 0"><button (click)="removeStationProduct()" type="submit" class="btn btn-default m-t-20">Remove Selected Products</button></span>  
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" id="closeModal" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<a id="modalAnchor" href="#modal-dialog" data-toggle="modal"></a>
+<a id="modalStaff" href="#modal-staff" data-toggle="modal"></a>
+<a id="modalProduct" href="#modal-product" data-toggle="modal"></a>
