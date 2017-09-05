@@ -26,7 +26,6 @@ import {DailySales} from '../model/DailySales';
 export class UserService {
     // URL to web api
     private baseURL = 'http://localhost:8080/Gapso-web/service/';
-    private createUserURL = this.baseURL + 'signUp';
     private createStationURL = this.baseURL + 'createStation';
     private createProductURL = this.baseURL + 'createProduct';
     private createPaymentOptionURL = this.baseURL + 'createPaymentOption';
@@ -39,7 +38,6 @@ export class UserService {
     private updateProductDispensingPointURL = this.baseURL + 'updateProductDispensingPoint';
     private updateProductDispensingPointAttendantURL = this.baseURL + 'updateProductDispensingPointAttendant?';
     private createPortalUserURL = this.baseURL + 'createPortalUser?';
-    private loginURL = this.baseURL + 'login?';
     private filterStationAttendantsURL = this.baseURL + 'filterStationAttendants?';
     private changePasswordURL = this.baseURL + 'changePassword?';
     private activateUserURL = this.baseURL + 'activateUser?';
@@ -47,8 +45,6 @@ export class UserService {
     private activateProductDispensingPointURL = this.baseURL + 'activateProductDispensingPoint?';
     private deactivateProductDispensingPointURL = this.baseURL + 'deactivateProductDispensingPoint?';
     private validateEmailURL = this.baseURL + 'validateEmail?';
-    private validateLoginEmailURL = this.baseURL + 'validateLoginEmail?';
-    private getUserRoleURL = this.baseURL + 'getUserRole?';
     private getUserBusinessURL = this.baseURL + 'getUserBusiness?';
     private updateBusinessURL = this.baseURL + 'updateBusiness';
     private updateProductURL = this.baseURL + 'updateProduct';
@@ -87,9 +83,6 @@ export class UserService {
     private getBusinessPaymentOptionURL = this.baseURL + 'getBusinessPaymentOption?'
     private getStationPaymentOptionURL = this.baseURL + 'getStationPaymentOption?';
     public getCurrentProductLevelURL = this.baseURL + 'getCurrentProductLevel?'
-    private checkBusinessManagerValidityURL = this.baseURL + 'checkBusinessManagerValidity?';
-    private checkAttendantValidityURL = this.baseURL + 'checkAttendantValidity?';
-    private checkStationManagerValidityURL = this.baseURL + 'checkStationManagerValidity?';
     private getDispensingPointByAttendantURL = this.baseURL + 'getDispensingPointByAttendant?';
     private getStationProductByStationAndProductURL = this.baseURL + 'getStationProductByStationAndProduct?'
 
@@ -107,53 +100,6 @@ export class UserService {
     }
 
     constructor(public http: Http, private router: Router, ) {}
-
-    continiousUserValidityCheck() {
-        this.portalUser = JSON.parse(sessionStorage.getItem('currentUser'));
-        if (this.portalUser != null) {
-            this.role = JSON.parse(sessionStorage.getItem('role'));
-            if (this.role.designation == 'BUSINESSMANAGER') {
-                this.business = JSON.parse(sessionStorage.getItem('business'));
-                const url = `${this.checkBusinessManagerValidityURL}userid=${this.portalUser.id}&businessId=${this.business.id}`;
-                Observable.interval(5000)
-                    .switchMap(() => this.http.get(url))
-                    .map((data) => data.json())
-                    .subscribe((data) => {
-                        if (data == 'FALSE') {
-                            this.logout();
-                            this.router.navigate(['login']);
-                        }
-                    });
-            }
-            if (this.role.designation == 'ATTENDANT') {
-                this.dispAttendant = JSON.parse(sessionStorage.getItem('dispensingPointAttendant'));
-                const url = `${this.checkAttendantValidityURL}userid=${this.portalUser.id}&dispAttendantId=${this.dispAttendant.id}&roleId=${this.role.id}`;
-                Observable.interval(5000)
-                    .switchMap(() => this.http.get(url))
-                    .map((data) => data.json())
-                    .subscribe((data) => {
-                        if (data == 'FALSE') {
-                            this.logout();
-                            this.router.navigate(['login']);
-                        }
-                    });
-            }
-            if (this.role.designation == 'STATIONMANAGER') {
-                this.station = JSON.parse(sessionStorage.getItem('station'));
-                const url = `${this.checkStationManagerValidityURL}userid=${this.portalUser.id}&stationId=${this.station.id}&roleId=${this.role.id}`;
-                Observable.interval(5000)
-                    .switchMap(() => this.http.get(url))
-                    .map((data) => data.json())
-                    .subscribe((data) => {
-                        if (data == 'FALSE') {
-                            this.logout();
-                            this.router.navigate(['login']);
-                        }
-                    });
-            }
-
-        }
-    }
 
     updateBusiness(business: Business) {
         return this.http
@@ -218,12 +164,6 @@ export class UserService {
         return this.http
             .post(this.updateStationURL, JSON.stringify(station), this.jwt())
             .map((response: Response) => response.json() as Station);
-    }
-
-    createUser(user: User) {
-        return this.http
-            .post(this.createUserURL, JSON.stringify(user), this.jwt())
-            .map((response: Response) => response.json() as User);
     }
 
     createProduct(product: Product) {
@@ -315,12 +255,6 @@ export class UserService {
     //            .catch(this.handleErro    r);
     //    }
 
-    login(emailAddress: string, password: string) {
-        const url = `${this.loginURL}emailAddress=${emailAddress}&password=${password}`;
-        return this.http.get(url)
-            .map((response: Response) => response.json() as User);
-    }
-
     filterStationAttendants(stationId: number) {
         const url = `${this.filterStationAttendantsURL}stationId=${stationId}`;
         return this.http.get(url)
@@ -329,12 +263,6 @@ export class UserService {
 
     validateEmail(emailAddress: string) {
         const url = `${this.validateEmailURL}emailAddress=${emailAddress}`;
-        return this.http.get(url)
-            .map((response: Response) => response.json() as User);
-    }
-
-    validateLoginEmail(emailAddress: string) {
-        const url = `${this.validateLoginEmailURL}emailAddress=${emailAddress}`;
         return this.http.get(url)
             .map((response: Response) => response.json() as User);
     }
@@ -367,12 +295,6 @@ export class UserService {
         const url = `${this.deactivateProductDispensingPointURL}pdpId=${pdpId}`;
         return this.http.get(url)
             .map((response: Response) => response.json() as ProductDispensingPoint);
-    }
-
-    getUserRole(userId: number) {
-        const url = `${this.getUserRoleURL}userId=${userId}`;
-        return this.http.get(url)
-            .map((response: Response) => response.json());
     }
 
     createStationProduct(stationProductIds: Number[]) {

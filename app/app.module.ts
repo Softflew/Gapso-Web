@@ -25,6 +25,10 @@ import {PaymentComponent} from './payment/payment.component';
 import {HeaderComponent} from './header/header.component';
 import {SideBarComponent} from './header/sidebar.component';
 import {UserService} from './service/user.service';
+import {CreateService} from './service/create.service';
+import {DeleteService} from './service/delete.service';
+import {GenericService} from './service/generic.service';
+import {ReadService} from './service/read.service';
 import {AlertService} from './service/alert.service';
 import {AuthGuard} from './guards/auth.guard';
 import {ChangePasswordGuard} from './guards/changePassword.guard';
@@ -83,6 +87,10 @@ import './rxjs-extensions';
     providers: [
         UserService,
         AlertService,
+        CreateService,
+        GenericService,
+        DeleteService,
+        ReadService,
         AuthGuard,
         AdminGuard,
         SuperAdminGuard,

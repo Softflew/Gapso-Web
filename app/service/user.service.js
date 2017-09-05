@@ -13,7 +13,6 @@ var http_1 = require('@angular/http');
 var router_1 = require('@angular/router');
 require('rxjs/add/operator/toPromise');
 require('rxjs/Rx');
-var Rx_1 = require('rxjs/Rx');
 var User_1 = require('../model/User');
 var Business_1 = require('../model/Business');
 var Station_1 = require('../model/Station');
@@ -25,7 +24,6 @@ var UserService = (function () {
         this.router = router;
         // URL to web api
         this.baseURL = 'http://localhost:8080/Gapso-web/service/';
-        this.createUserURL = this.baseURL + 'signUp';
         this.createStationURL = this.baseURL + 'createStation';
         this.createProductURL = this.baseURL + 'createProduct';
         this.createPaymentOptionURL = this.baseURL + 'createPaymentOption';
@@ -38,7 +36,6 @@ var UserService = (function () {
         this.updateProductDispensingPointURL = this.baseURL + 'updateProductDispensingPoint';
         this.updateProductDispensingPointAttendantURL = this.baseURL + 'updateProductDispensingPointAttendant?';
         this.createPortalUserURL = this.baseURL + 'createPortalUser?';
-        this.loginURL = this.baseURL + 'login?';
         this.filterStationAttendantsURL = this.baseURL + 'filterStationAttendants?';
         this.changePasswordURL = this.baseURL + 'changePassword?';
         this.activateUserURL = this.baseURL + 'activateUser?';
@@ -46,8 +43,6 @@ var UserService = (function () {
         this.activateProductDispensingPointURL = this.baseURL + 'activateProductDispensingPoint?';
         this.deactivateProductDispensingPointURL = this.baseURL + 'deactivateProductDispensingPoint?';
         this.validateEmailURL = this.baseURL + 'validateEmail?';
-        this.validateLoginEmailURL = this.baseURL + 'validateLoginEmail?';
-        this.getUserRoleURL = this.baseURL + 'getUserRole?';
         this.getUserBusinessURL = this.baseURL + 'getUserBusiness?';
         this.updateBusinessURL = this.baseURL + 'updateBusiness';
         this.updateProductURL = this.baseURL + 'updateProduct';
@@ -86,9 +81,6 @@ var UserService = (function () {
         this.getBusinessPaymentOptionURL = this.baseURL + 'getBusinessPaymentOption?';
         this.getStationPaymentOptionURL = this.baseURL + 'getStationPaymentOption?';
         this.getCurrentProductLevelURL = this.baseURL + 'getCurrentProductLevel?';
-        this.checkBusinessManagerValidityURL = this.baseURL + 'checkBusinessManagerValidity?';
-        this.checkAttendantValidityURL = this.baseURL + 'checkAttendantValidity?';
-        this.checkStationManagerValidityURL = this.baseURL + 'checkStationManagerValidity?';
         this.getDispensingPointByAttendantURL = this.baseURL + 'getDispensingPointByAttendant?';
         this.getStationProductByStationAndProductURL = this.baseURL + 'getStationProductByStationAndProduct?';
         this.portalUser = new User_1.User();
@@ -101,52 +93,6 @@ var UserService = (function () {
     UserService.prototype.handleError = function (error) {
         console.error('An error occurred', error); // for demo purposes only
         return Promise.reject(error || error);
-    };
-    UserService.prototype.continiousUserValidityCheck = function () {
-        var _this = this;
-        this.portalUser = JSON.parse(sessionStorage.getItem('currentUser'));
-        if (this.portalUser != null) {
-            this.role = JSON.parse(sessionStorage.getItem('role'));
-            if (this.role.designation == 'BUSINESSMANAGER') {
-                this.business = JSON.parse(sessionStorage.getItem('business'));
-                var url_1 = this.checkBusinessManagerValidityURL + "userid=" + this.portalUser.id + "&businessId=" + this.business.id;
-                Rx_1.Observable.interval(5000)
-                    .switchMap(function () { return _this.http.get(url_1); })
-                    .map(function (data) { return data.json(); })
-                    .subscribe(function (data) {
-                    if (data == 'FALSE') {
-                        _this.logout();
-                        _this.router.navigate(['login']);
-                    }
-                });
-            }
-            if (this.role.designation == 'ATTENDANT') {
-                this.dispAttendant = JSON.parse(sessionStorage.getItem('dispensingPointAttendant'));
-                var url_2 = this.checkAttendantValidityURL + "userid=" + this.portalUser.id + "&dispAttendantId=" + this.dispAttendant.id + "&roleId=" + this.role.id;
-                Rx_1.Observable.interval(5000)
-                    .switchMap(function () { return _this.http.get(url_2); })
-                    .map(function (data) { return data.json(); })
-                    .subscribe(function (data) {
-                    if (data == 'FALSE') {
-                        _this.logout();
-                        _this.router.navigate(['login']);
-                    }
-                });
-            }
-            if (this.role.designation == 'STATIONMANAGER') {
-                this.station = JSON.parse(sessionStorage.getItem('station'));
-                var url_3 = this.checkStationManagerValidityURL + "userid=" + this.portalUser.id + "&stationId=" + this.station.id + "&roleId=" + this.role.id;
-                Rx_1.Observable.interval(5000)
-                    .switchMap(function () { return _this.http.get(url_3); })
-                    .map(function (data) { return data.json(); })
-                    .subscribe(function (data) {
-                    if (data == 'FALSE') {
-                        _this.logout();
-                        _this.router.navigate(['login']);
-                    }
-                });
-            }
-        }
     };
     UserService.prototype.updateBusiness = function (business) {
         return this.http
@@ -200,11 +146,6 @@ var UserService = (function () {
     UserService.prototype.updateStation = function (station) {
         return this.http
             .post(this.updateStationURL, JSON.stringify(station), this.jwt())
-            .map(function (response) { return response.json(); });
-    };
-    UserService.prototype.createUser = function (user) {
-        return this.http
-            .post(this.createUserURL, JSON.stringify(user), this.jwt())
             .map(function (response) { return response.json(); });
     };
     UserService.prototype.createProduct = function (product) {
@@ -281,11 +222,6 @@ var UserService = (function () {
     //            .then(response => response.json    ())
     //            .catch(this.handleErro    r);
     //    }
-    UserService.prototype.login = function (emailAddress, password) {
-        var url = this.loginURL + "emailAddress=" + emailAddress + "&password=" + password;
-        return this.http.get(url)
-            .map(function (response) { return response.json(); });
-    };
     UserService.prototype.filterStationAttendants = function (stationId) {
         var url = this.filterStationAttendantsURL + "stationId=" + stationId;
         return this.http.get(url)
@@ -293,11 +229,6 @@ var UserService = (function () {
     };
     UserService.prototype.validateEmail = function (emailAddress) {
         var url = this.validateEmailURL + "emailAddress=" + emailAddress;
-        return this.http.get(url)
-            .map(function (response) { return response.json(); });
-    };
-    UserService.prototype.validateLoginEmail = function (emailAddress) {
-        var url = this.validateLoginEmailURL + "emailAddress=" + emailAddress;
         return this.http.get(url)
             .map(function (response) { return response.json(); });
     };
@@ -323,11 +254,6 @@ var UserService = (function () {
     };
     UserService.prototype.deactivateProductDispensingPoint = function (pdpId) {
         var url = this.deactivateProductDispensingPointURL + "pdpId=" + pdpId;
-        return this.http.get(url)
-            .map(function (response) { return response.json(); });
-    };
-    UserService.prototype.getUserRole = function (userId) {
-        var url = this.getUserRoleURL + "userId=" + userId;
         return this.http.get(url)
             .map(function (response) { return response.json(); });
     };

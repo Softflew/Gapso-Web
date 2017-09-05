@@ -63,5 +63,6 @@ export class PortalUserRole {
     setDispensingPointAttendant(dispensingPointAttendant: DispensingPointAttendant) {
         this.dispensingPointAttendant = dispensingPointAttendant;
     }
+    
 
 }

@@ -55,7 +55,7 @@
                                 <div class="col-md-7">
                                     <span class="btn btn-success fileinput-button">
                                         <i class="fa fa-plus"></i>
-                                        <image-upload [max]="1" [preview]="true" [maxFileSize]="1048576" [buttonCaption]="'Select Logo'" [url]="'http://localhost:8080/Gapso-web/service/uploadBusinessLogo?image'" 
+                                        <image-upload [max]="1" [preview]="true" [maxFileSize]="1048576" [buttonCaption]="'Select Logo'" [url]="'http://localhost:8080/Gapso-web/service/uploadBusinessLogo/8?image'" 
                                             [extensions]="['jpg', 'png', 'gif', 'jpeg']" [dropBoxMessage]="'Drop your logo here'" 
                                             (onFileUploadFinish)="imageUploaded($event)" (isPending)="disableSendButton($event)" (onRemove)="imageRemoved($event)"></image-upload>
                                     </span>

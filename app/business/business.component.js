@@ -47,10 +47,9 @@ var BusinessComponent = (function () {
         }
     };
     BusinessComponent.prototype.imageUploaded = function (e) {
-        console.log("e is " + e);
-        //        var modal = this.elementRef.nativeElement.querySelector("#modal-dialog").querySelector("#closeModal");
-        //        modal.click();
-        //        location.reload();
+        var modal = this.elementRef.nativeElement.querySelector("#modal-dialog").querySelector("#closeModal");
+        modal.click();
+        location.reload();
     };
     BusinessComponent.prototype.disableSendButton = function (e) {
     };

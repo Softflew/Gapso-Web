@@ -14,7 +14,7 @@ import {AlertService} from '../service/alert.service';
 export class BusinessComponent implements OnInit {
     user = new User();
     business = new Business();
-
+   
     constructor(
         private userService: UserService,
         private alertService: AlertService,
@@ -50,10 +50,9 @@ export class BusinessComponent implements OnInit {
     }
 
     public imageUploaded(e: any): void {
-        console.log("e is " + e)
-        //        var modal = this.elementRef.nativeElement.querySelector("#modal-dialog").querySelector("#closeModal");
-        //        modal.click();
-        //        location.reload();
+        var modal = this.elementRef.nativeElement.querySelector("#modal-dialog").querySelector("#closeModal");
+        modal.click();
+        location.reload();
     }
 
     public disableSendButton(e: any): void {

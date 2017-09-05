@@ -29,6 +29,10 @@ var payment_component_1 = require('./payment/payment.component');
 var header_component_1 = require('./header/header.component');
 var sidebar_component_1 = require('./header/sidebar.component');
 var user_service_1 = require('./service/user.service');
+var create_service_1 = require('./service/create.service');
+var delete_service_1 = require('./service/delete.service');
+var generic_service_1 = require('./service/generic.service');
+var read_service_1 = require('./service/read.service');
 var alert_service_1 = require('./service/alert.service');
 var auth_guard_1 = require('./guards/auth.guard');
 var changePassword_guard_1 = require('./guards/changePassword.guard');
@@ -87,6 +91,10 @@ var AppModule = (function () {
             providers: [
                 user_service_1.UserService,
                 alert_service_1.AlertService,
+                create_service_1.CreateService,
+                generic_service_1.GenericService,
+                delete_service_1.DeleteService,
+                read_service_1.ReadService,
                 auth_guard_1.AuthGuard,
                 admin_guard_1.AdminGuard,
                 superadmin_guard_1.SuperAdminGuard,

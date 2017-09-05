@@ -2,7 +2,8 @@ import {Component, OnInit, ElementRef} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {User} from '../model/User';
 import {PortalUserRole} from '../model/PortalUserRole';
-import {UserService} from '../service/user.service';
+import {GenericService} from '../service/generic.service';
+import {ReadService} from '../service/read.service';
 import {AlertService} from '../service/alert.service';
 import {JsonpModule, Jsonp} from '@angular/http';
 
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private userService: UserService,
+        private genericService: GenericService,
+        private readService: ReadService,
         private alertService: AlertService,
         private router: Router,
         private elementRef: ElementRef,
@@ -31,7 +33,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         // reset login status
-        this.userService.logout();
+        this.genericService.logout();
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
@@ -70,7 +72,7 @@ export class LoginComponent implements OnInit {
     // }
 
     loginUser() {
-        this.userService.login(this.user.emailAddress, this.user.password).subscribe(
+        this.genericService.login(this.user.emailAddress, this.user.password).subscribe(
             data => {
                 this.handleUserRole(data);
             },
@@ -81,7 +83,7 @@ export class LoginComponent implements OnInit {
     }
 
     handleUserRole(loggedInUser: User) {
-        this.userService.getUserRole(loggedInUser.id).subscribe(
+        this.readService.getUserRole(loggedInUser.id).subscribe(
             data => {
                 if (data != null) {
                     if (data.designation == 'SUPERADMIN') {
@@ -95,7 +97,7 @@ export class LoginComponent implements OnInit {
                             sessionStorage.setItem('business', JSON.stringify(data.business));
                             sessionStorage.setItem('currentUser', JSON.stringify(loggedInUser));
                             // this.logUserSession(loggedInUser.emailAddress, loggedInUser.id);
-                            this.userService.continiousUserValidityCheck();
+                            this.genericService.continiousUserValidityCheck();
                             this.router.navigate([this.returnUrl]);
                         } else {
                             this.alertService.error("Your Business is in-active, please contact admin.");
@@ -110,7 +112,7 @@ export class LoginComponent implements OnInit {
                                     sessionStorage.setItem('currentUser', JSON.stringify(loggedInUser));
                                     sessionStorage.setItem('dispensingPointAttendant', JSON.stringify(data.dispensingPointAttendant));
                                     sessionStorage.setItem('dispensingPoint', JSON.stringify(data.dispensingPointAttendant.dispensingPoint));
-                                    this.userService.continiousUserValidityCheck();
+                                    this.genericService.continiousUserValidityCheck();
                                     this.router.navigate([this.returnUrl]);
                                 } else {
                                     this.alertService.error("You don't have a dispensing point assigned to you, please contact admin.");
@@ -128,7 +130,7 @@ export class LoginComponent implements OnInit {
                                 sessionStorage.setItem('station', JSON.stringify(data.station));
                                 sessionStorage.setItem('currentUser', JSON.stringify(loggedInUser));
                                 // this.logUserSession(loggedInUser.emailAddress, loggedInUser.id);
-                                this.userService.continiousUserValidityCheck();
+                                this.genericService.continiousUserValidityCheck();
                                 this.router.navigate([this.returnUrl]);
                             } else {
                                 this.alertService.error("You don't have a station assigned to you, please contact admin.");
@@ -147,7 +149,7 @@ export class LoginComponent implements OnInit {
     }
 
     validateLoginEmail() {
-        this.userService.validateLoginEmail(this.user.emailAddress).subscribe(
+        this.genericService.validateLoginEmail(this.user.emailAddress).subscribe(
             data => {
                 if (!data.active) {
                     this.alertService.error("User is disabled. Please contact admin.");

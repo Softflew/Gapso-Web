@@ -12,13 +12,15 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var User_1 = require('../model/User');
 var PortalUserRole_1 = require('../model/PortalUserRole');
-var user_service_1 = require('../service/user.service');
+var generic_service_1 = require('../service/generic.service');
+var read_service_1 = require('../service/read.service');
 var alert_service_1 = require('../service/alert.service');
 var http_1 = require('@angular/http');
 var LoginComponent = (function () {
-    function LoginComponent(route, userService, alertService, router, elementRef, jsonp) {
+    function LoginComponent(route, genericService, readService, alertService, router, elementRef, jsonp) {
         this.route = route;
-        this.userService = userService;
+        this.genericService = genericService;
+        this.readService = readService;
         this.alertService = alertService;
         this.router = router;
         this.elementRef = elementRef;
@@ -28,7 +30,7 @@ var LoginComponent = (function () {
     }
     LoginComponent.prototype.ngOnInit = function () {
         // reset login status
-        this.userService.logout();
+        this.genericService.logout();
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
         this.newUser();
@@ -60,7 +62,7 @@ var LoginComponent = (function () {
     // }
     LoginComponent.prototype.loginUser = function () {
         var _this = this;
-        this.userService.login(this.user.emailAddress, this.user.password).subscribe(function (data) {
+        this.genericService.login(this.user.emailAddress, this.user.password).subscribe(function (data) {
             _this.handleUserRole(data);
         }, function (error) {
             console.log(error);
@@ -69,7 +71,7 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.handleUserRole = function (loggedInUser) {
         var _this = this;
-        this.userService.getUserRole(loggedInUser.id).subscribe(function (data) {
+        this.readService.getUserRole(loggedInUser.id).subscribe(function (data) {
             if (data != null) {
                 if (data.designation == 'SUPERADMIN') {
                     sessionStorage.setItem('role', JSON.stringify(data));
@@ -83,7 +85,7 @@ var LoginComponent = (function () {
                         sessionStorage.setItem('business', JSON.stringify(data.business));
                         sessionStorage.setItem('currentUser', JSON.stringify(loggedInUser));
                         // this.logUserSession(loggedInUser.emailAddress, loggedInUser.id);
-                        _this.userService.continiousUserValidityCheck();
+                        _this.genericService.continiousUserValidityCheck();
                         _this.router.navigate([_this.returnUrl]);
                     }
                     else {
@@ -100,7 +102,7 @@ var LoginComponent = (function () {
                                 sessionStorage.setItem('currentUser', JSON.stringify(loggedInUser));
                                 sessionStorage.setItem('dispensingPointAttendant', JSON.stringify(data.dispensingPointAttendant));
                                 sessionStorage.setItem('dispensingPoint', JSON.stringify(data.dispensingPointAttendant.dispensingPoint));
-                                _this.userService.continiousUserValidityCheck();
+                                _this.genericService.continiousUserValidityCheck();
                                 _this.router.navigate([_this.returnUrl]);
                             }
                             else {
@@ -121,7 +123,7 @@ var LoginComponent = (function () {
                             sessionStorage.setItem('station', JSON.stringify(data.station));
                             sessionStorage.setItem('currentUser', JSON.stringify(loggedInUser));
                             // this.logUserSession(loggedInUser.emailAddress, loggedInUser.id);
-                            _this.userService.continiousUserValidityCheck();
+                            _this.genericService.continiousUserValidityCheck();
                             _this.router.navigate([_this.returnUrl]);
                         }
                         else {
@@ -143,7 +145,7 @@ var LoginComponent = (function () {
     };
     LoginComponent.prototype.validateLoginEmail = function () {
         var _this = this;
-        this.userService.validateLoginEmail(this.user.emailAddress).subscribe(function (data) {
+        this.genericService.validateLoginEmail(this.user.emailAddress).subscribe(function (data) {
             if (!data.active) {
                 _this.alertService.error("User is disabled. Please contact admin.");
             }
@@ -167,7 +169,7 @@ var LoginComponent = (function () {
             selector: 'home',
             templateUrl: 'login.component.html'
         }), 
-        __metadata('design:paramtypes', [router_1.ActivatedRoute, user_service_1.UserService, alert_service_1.AlertService, router_1.Router, core_1.ElementRef, http_1.Jsonp])
+        __metadata('design:paramtypes', [router_1.ActivatedRoute, generic_service_1.GenericService, read_service_1.ReadService, alert_service_1.AlertService, router_1.Router, core_1.ElementRef, http_1.Jsonp])
     ], LoginComponent);
     return LoginComponent;
 }());
